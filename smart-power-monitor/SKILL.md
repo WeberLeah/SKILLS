@@ -1,6 +1,6 @@
 ---
 name: smart-power-monitor
-description: 读取 Smart Power Monitor 功耗分析仪（smartxbw，USB HID，SN P118-F000623）的实时电流/电压/功率。厂商上位机 Smart_power_monitor 独占设备时用 UIA 读它界面上的数值；需要直接控制输出电压/限流或做过流保护时才走 SmartPower.dll（32 位）。当用户提到功耗仪、功耗分析仪、Smart Power Monitor、读电流、测功耗、待机电流、nA 级电流、smartxbw、P118 时触发。
+description: 读取 Smart Power Monitor 功耗分析仪（smartxbw，USB HID，设备序列号）的实时电流/电压/功率。厂商上位机 Smart_power_monitor 独占设备时用 UIA 读它界面上的数值；需要直接控制输出电压/限流或做过流保护时才走 SmartPower.dll（32 位）。当用户提到功耗仪、功耗分析仪、Smart Power Monitor、读电流、测功耗、待机电流、nA 级电流或 smartxbw 时触发。
 ---
 
 # 功耗仪（Smart Power Monitor）读取
@@ -12,7 +12,7 @@ nA 级电流功耗分析仪，厂商 www.smartxbw.com。**核心约束：一个 
 | 项目 | 值 |
 |---|---|
 | 型号 | Smart Power Monitor（SDK V1.3） |
-| USB | HID `VID_0483&PID_5911`，SN `P118-F000623` |
+| USB | HID `VID_0483&PID_5911`，SN `<device-serial>` |
 | 特征 | 软件启动有**软启动**，`OutputOn` 后约 0.5 s 电压才爬到设定值 |
 | 测量范围 | 电流可到 nA 级，显示 4 位有效数字 |
 
@@ -30,7 +30,7 @@ nA 级电流功耗分析仪，厂商 www.smartxbw.com。**核心约束：一个 
 
 ## 3. 路线 A：读厂商上位机（推荐）
 
-厂商软件：`D:\Smart_power功耗分析仪资料\smart_power_monitor\Smart_power_monitor.exe`（V2.8，进程名 `Smart_power_monitor`）。
+厂商软件：`%SMART_POWER_MONITOR_HOME%\smart_power_monitor\Smart_power_monitor.exe`（V2.8，进程名 `Smart_power_monitor`）。
 
 脚本：`read_vendor.ps1`（本 skill 目录内）
 
@@ -39,7 +39,7 @@ nA 级电流功耗分析仪，厂商 www.smartxbw.com。**核心约束：一个 
 & "$env:SystemRoot\SysWOW64\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -File read_vendor.ps1
 
 # 读 60 秒并同时存 CSV
-... -File read_vendor.ps1 -Seconds 60 -Csv D:\current.csv
+... -File read_vendor.ps1 -Seconds 60 -Csv "$env:TEMP\current.csv"
 
 # 最快约 300ms 一次
 ... -File read_vendor.ps1 -IntervalMs 300
@@ -70,9 +70,9 @@ nA 级电流功耗分析仪，厂商 www.smartxbw.com。**核心约束：一个 
 
 ## 4. 路线 B：直接调 SDK（仅在需要控制输出时）
 
-SDK 目录：`C:\Users\weiji\Downloads\Smart_power_monitor_SDK_V1.3`，`dll_lib\SmartPower.dll` 是 **x86 32 位**。
+SDK 目录：`%SMART_POWER_MONITOR_SDK%`，其中 `dll_lib\SmartPower.dll` 是 **x86 32 位**。
 
-必须用 32 位进程：`C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe`，或 csc `/platform:x86` 编译。
+必须用 32 位进程：`%SystemRoot%\SysWOW64\WindowsPowerShell\v1.0\powershell.exe`，或 csc `/platform:x86` 编译。
 
 | 函数 | 说明 |
 |---|---|

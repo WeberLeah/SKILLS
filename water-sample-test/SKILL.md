@@ -19,7 +19,7 @@ description: 微功耗留样仪（STM32L431）重复测试流程：AC5 编译 �
 |---|---|
 | 串口 | **COM4**（CH340；串口助手 / Modbus 主站会占用） |
 | 参数 | 9600 8N1，无流控，GBK(936) |
-| 工程根 | `C:\@WORK\微功耗留样仪V1\微功耗留样仪V1.0` |
+| 工程根 | `%WATER_PROJECT_ROOT%` |
 | APP 工程 | `Template\Project-L431\Temaple.uvprojx` |
 | Boot 工程 | `BootLoader\Project-L431\Temaple.uvprojx`（一般不动） |
 | 固件 | `Template\Project-L431\Temaple\APP.bin` |
@@ -32,7 +32,7 @@ description: 微功耗留样仪（STM32L431）重复测试流程：AC5 编译 �
 ## 1. 编译
 
 ```bash
-cd "C:/@WORK/微功耗留样仪V1/微功耗留样仪V1.0"
+cd "$WATER_PROJECT_ROOT"
 "C:/Keil/Keil_v5/UV4/UV4.exe" -b "Template/Project-L431/Temaple.uvprojx" -j0 -o "$TEMP/app_build.log"
 iconv -f GBK -t UTF-8 "$TEMP/app_build.log" | tail -5
 ```

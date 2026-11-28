@@ -4,14 +4,14 @@
   用法：
     .\Send-TestResult.ps1 -Result PASS
     .\Send-TestResult.ps1 -Result FAIL -Station A1 -SN SN001 -Message "电压超限"
-    .\Send-TestResult.ps1 -Server 192.168.1.100 -Result PASS
+    .\Send-TestResult.ps1 -Server 192.0.2.10 -Result PASS
 
   在测试脚本里调用：
-    & "D:\TestNotify\Send-TestResult.ps1" -Server 192.168.1.100 -Result $r -SN $sn
+    & "$PSScriptRoot\Send-TestResult.ps1" -Server 192.0.2.10 -Result $r -SN $sn
 #>
 [CmdletBinding()]
 param(
-    [string]$Server = "192.168.1.100",
+    [string]$Server = "192.0.2.10",
     [int]$Port = 8080,
     [Parameter(Mandatory = $true)][string]$Result,
     [string]$Station = "",

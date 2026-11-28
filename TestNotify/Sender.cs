@@ -2,7 +2,7 @@
 // 编译: build.bat  (csc.exe /target:winexe /codepage:65001)
 //
 // 界面使用: 双击 Sender.exe，填接收端 IP/端口/工位，点 PASS / FAIL
-// 命令行:   Sender.exe --send PASS --server 192.168.1.100 --port 8080 --station A1 --sn SN001
+// 命令行:   Sender.exe --send PASS --server 192.0.2.10 --port 8080 --station A1 --sn SN001
 //
 // 不依赖第三方库，Windows 自带 .NET Framework 即可运行。
 
@@ -63,7 +63,7 @@ internal static class Program
     private static int CommandLineSend(string[] args)
     {
         string result = ArgValue(args, "--send", ArgValue(args, "--result", "PASS"));
-        string server = ArgValue(args, "--server", "192.168.1.100");
+        string server = ArgValue(args, "--server", "192.0.2.10");
         int port = 8080;
         int.TryParse(ArgValue(args, "--port", "8080"), out port);
         string station = ArgValue(args, "--station", Environment.MachineName);
@@ -258,7 +258,7 @@ public sealed class SenderForm : Form
         row0.Controls.Add(NewLabel("接收端"));
         txtServer.Width = 170;
         txtServer.Margin = new Padding(0, 6, 6, 0);
-        Cue(txtServer, "192.168.1.100");
+        Cue(txtServer, "192.0.2.10");
         row0.Controls.Add(txtServer);
         txtPort.Width = 70;
         txtPort.Margin = new Padding(0, 6, 6, 0);
@@ -581,7 +581,7 @@ public sealed class SenderForm : Form
         }
         catch { }
 
-        txtServer.Text = server.Length > 0 ? server : "192.168.1.100";
+        txtServer.Text = server.Length > 0 ? server : "192.0.2.10";
         txtPort.Text = port.Length > 0 ? port : "8080";
         txtStation.Text = station.Length > 0 ? station : Environment.MachineName;
     }

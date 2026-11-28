@@ -5,7 +5,7 @@ rem  Edit SERVER to the IP of the PC running TestNotify.exe
 rem  Usage:  send.bat PASS [station] [sn] [message]
 rem  Example:send.bat FAIL A1 SN001 "voltage too high"
 rem ============================================================
-set "SERVER=192.168.1.100"
+set "SERVER=192.0.2.10"
 set "PORT=8080"
 
 if "%~1"=="" (

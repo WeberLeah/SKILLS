@@ -4,7 +4,7 @@
 
 不依赖 Python、不需要联网、不需要装任何运行库（用的是 Windows 自带的 .NET Framework），也不用管理员权限。
 
-**默认安装目录**：`D:\TestNotify`。整个文件夹可以随意拷贝/移动到其他电脑或盘符，程序都按自身所在目录读写 `results.csv`、`dashboard.html`、`sender.ini`、`receiver.ini`。
+**默认安装目录**：`%TESTNOTIFY_HOME%`。整个文件夹可以随意拷贝/移动到其他电脑或盘符，程序都按自身所在目录读写 `results.csv`、`dashboard.html`、`sender.ini`、`receiver.ini`。
 
 ---
 
@@ -28,7 +28,7 @@
 
 **1. 接收端电脑**：双击 `TestNotify.exe`
 
-- 打开的是普通窗口（不是 cmd 黑框），顶部显示监听地址，例如 `http://192.168.1.100:8080/`。
+- 打开的是普通窗口（不是 cmd 黑框），顶部显示监听地址，例如 `http://192.0.2.10:8080/`。
 - **默认不会自动打开浏览器**——接收端窗口里就能看结果；想看网页大屏时点右上角"打开大屏"，或用浏览器访问这个地址。
 - 首次运行 Windows 会弹防火墙提示，勾选"专用网络"并允许。错过了就点托盘菜单"放行防火墙（管理员）"，或管理员运行一次 `allow-firewall.bat`。
 - **关闭窗口不会退出程序**：它会缩到右下角托盘继续监听，双击托盘图标即可重新打开。要真正退出，点窗口里的"退出"或托盘右键 →"退出"。
@@ -38,13 +38,13 @@
 操作员直接双击 `Sender.exe` 点按钮就行（见下文"发送端窗口程序"）；也可以用命令：
 
 ```powershell
-# 最简单（假设接收端是 192.168.1.100）
-curl "http://192.168.1.100:8080/?result=PASS"
+# 最简单（假设接收端是 192.0.2.10）
+curl "http://192.0.2.10:8080/?result=PASS"
 ```
 
 ```powershell
 # 带工位、序列号、备注（中文请用这个脚本，编码不会乱）
-.\Send-TestResult.ps1 -Server 192.168.1.100 -Result FAIL -Station A1 -SN SN2026001 -Message "电压超限 3.2V"
+.\Send-TestResult.ps1 -Server 192.0.2.10 -Result FAIL -Station A1 -SN SN2026001 -Message "电压超限 3.2V"
 ```
 
 ```bat
@@ -98,8 +98,8 @@ send.bat FAIL A1 SN2026001 "电压超限"
 **命令行模式**（`Sender.exe` 也支持无界面调用，方便接进测试脚本）
 
 ```bat
-Sender.exe --send PASS --server 192.168.1.100 --port 8080 --station A1 --sn SN001
-Sender.exe --send FAIL --server 192.168.1.100 --station A1 --sn SN001 --msg "电压超限"
+Sender.exe --send PASS --server 192.0.2.10 --port 8080 --station A1 --sn SN001
+Sender.exe --send FAIL --server 192.0.2.10 --station A1 --sn SN001 --msg "电压超限"
 ```
 
 成功返回退出码 `0`，发送失败返回 `1`。
@@ -131,25 +131,25 @@ POST/GET  http://<接收端IP>:8080/report
 
 ```bash
 # 1) 查询串
-curl "http://192.168.1.100:8080/report?result=PASS&station=A1&sn=SN001"
+curl "http://192.0.2.10:8080/report?result=PASS&station=A1&sn=SN001"
 
 # 2) 表单
-curl -X POST -d "result=FAIL&station=A1&sn=SN001&msg=电压超限" http://192.168.1.100:8080/report
+curl -X POST -d "result=FAIL&station=A1&sn=SN001&msg=电压超限" http://192.0.2.10:8080/report
 
 # 3) JSON（UTF-8）
 curl -X POST -H "Content-Type: application/json" \
      -d '{"result":"PASS","station":"A1","sn":"SN001"}' \
-     http://192.168.1.100:8080/report
+     http://192.0.2.10:8080/report
 
 # 4) 裸文本
-curl -X POST --data-binary "PASS" http://192.168.1.100:8080/report
+curl -X POST --data-binary "PASS" http://192.0.2.10:8080/report
 ```
 
 Python（如果测试机上有 Python）：
 
 ```python
 import requests
-requests.post("http://192.168.1.100:8080/report",
+requests.post("http://192.0.2.10:8080/report",
               json={"result": "FAIL", "station": "A1", "sn": "SN001", "msg": "电压超限"},
               timeout=3)
 ```
@@ -158,7 +158,7 @@ C#：
 
 ```csharp
 using var http = new System.Net.Http.HttpClient { Timeout = TimeSpan.FromSeconds(3) };
-await http.PostAsync("http://192.168.1.100:8080/report",
+await http.PostAsync("http://192.0.2.10:8080/report",
     new System.Net.Http.StringContent(
         "{\"result\":\"PASS\",\"station\":\"A1\"}",
         System.Text.Encoding.UTF8, "application/json"));

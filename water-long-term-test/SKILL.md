@@ -40,7 +40,7 @@ description: 微功耗留样仪（STM32L431）长期无人值守测试调度：�
 | 项 | 值 |
 |---|---|
 | 串口 | **COM4**（CH340），9600 8N1，GBK(936) |
-| 工程根 | `C:\@WORK\微功耗留样仪V1\微功耗留样仪V1.0` |
+| 工程根 | `%WATER_PROJECT_ROOT%` |
 | 单轮脚本 | `%USERPROFILE%\.claude\skills\water-sample-test\scripts\run_round.ps1` |
 | 本 skill 驱动 | `%USERPROFILE%\.claude\skills\water-long-term-test\scripts\repeat_water_test.ps1` |
 | 功耗读取 | `%USERPROFILE%\.claude\skills\water-long-term-test\scripts\read_power.ps1`（依赖 smart-power-monitor 的厂商上位机界面） |
